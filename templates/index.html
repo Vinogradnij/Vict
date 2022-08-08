@@ -3,6 +3,8 @@
 {% block main %}
     <h1>Главная</h1>
     <ul>
-        <li>Тема викторины</li>
+        {% for categorie in categories %}
+            <li>{{ categorie }}</li>
+        {% endfor %}
     </ul>
 {% endblock %}
