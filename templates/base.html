@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    {% block title %}
+        <meta charset="UTF-8">
+        {% if title %}
+            <title>{{ title }}</title>
+        {% else %}
+            <title>Викторина</title>
+        {% endif %}
+    {% endblock %}
+</head>
+
+<body>
+<header>
+    Шапка сайта
+</header>
+<main>
+    {% block main %}
+    {% endblock %}
+</main>
+<footer>
+    Подвал сайта
+</footer>
+</body>
+
+</html>
