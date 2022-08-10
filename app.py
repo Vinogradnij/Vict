@@ -2,7 +2,10 @@ from flask import Flask, render_template
 
 app = Flask(__name__)
 
-categories = ['География', 'История', 'Информатика']
+categories = [{'name': 'География', 'url': '/geography'},
+              {'name': 'История', 'url': '/history'},
+              {'name': 'Информатика', 'url': '/informatics'}]
+
 server = 'http://localhost'
 
 

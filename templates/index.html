@@ -4,7 +4,7 @@
     <h1>Главная</h1>
     <ul>
         {% for categorie in categories %}
-            <li>{{ categorie }}</li>
+            <li><a href="{{ categorie['url'] }}"> {{ categorie['name'] }}</a></li>
         {% endfor %}
     </ul>
 {% endblock %}
