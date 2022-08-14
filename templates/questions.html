@@ -5,7 +5,7 @@
     <form action="questions" method="post">
         {% for answer in answers %}
             <label>
-                <input type="radio" name="answer" value="{{ answer }}"> {{ answer }}
+                <input type="radio" name="answer" value="{{ answer }}" checked> {{ answer }}
             </label>
             <br>
         {% endfor %}

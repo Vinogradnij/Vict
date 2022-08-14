@@ -8,7 +8,8 @@ class HandlerQuestions:
         self.__topic = topic
         self.__records = self.__connect()
         self.__keys = list(self.__records.keys())
-        self.__len_records = len(self.__keys)
+        self.__points = 0
+        self.__right_answer = ''
 
     def __connect(self) -> dict:
         try:
@@ -23,20 +24,31 @@ class HandlerQuestions:
             for record in cursor:
                 records[record[0]] = {'question': record[2], 'right_answer': record[3], 'wrong_answers': list(record[4:])}
             connection.close()
-            print(records[0])
-            print(records[0]['wrong_answers'])
             return records
         except (Exception, Error) as e:
             print('Error! ', e)
 
     def __shuffle_answers(self, right_answer: str, wrong_answers: list) -> list:
-        wrong_answers.append(right_answer)
-        shuffle(wrong_answers)
-        return wrong_answers
+        result = wrong_answers.copy()
+        result.append(right_answer)
+        shuffle(result)
+        return result
+
+    @property
+    def points(self):
+        return self.__points
 
     def get_question(self) -> dict:
-        number_of_question = choice(self.__keys)
-        record = self.__records[number_of_question]
-        del self.__records[number_of_question]
-        record['wrong_answers'] = self.__shuffle_answers(record['right_answer'], record['wrong_answers'])
-        return record
+        if self.__keys:
+            number_of_question = choice(self.__keys)
+            record = self.__records.pop(number_of_question)
+            self.__keys.remove(number_of_question)
+            self.__right_answer = record['right_answer']
+            record['wrong_answers'] = self.__shuffle_answers(record['right_answer'], record['wrong_answers'])
+            return record
+        else:
+            return {}
+
+    def check_answer(self, user_answer: str) -> None:
+        if user_answer.lower() == self.__right_answer.lower():
+            self.__points += 1

@@ -35,24 +35,24 @@ def informatics():
 @app.route('/questions', methods=['POST', 'GET'])
 def questions():
     global handler
-    question = ''
-    answers = []
+    record = {}
     if request.method == 'POST':
         if 'topic' in request.form:
             if request.form['topic'] == 'География':
                 handler = HandlerQuestions(1)
+                record = handler.get_question()
             elif request.form['topic'] == 'История':
                 pass
             elif request.form['topic'] == 'Информатика':
                 pass
-
-        if handler:
+        if 'answer' in request.form:
+            handler.check_answer(request.form['answer'])
             record = handler.get_question()
-            question = record['question']
-            answers = record['wrong_answers']
-            right_answer = record['right_answer']
+            if not record:
+                return render_template('congratulations.html', points=handler.points)
 
-    return render_template('questions.html', title='Вопросы', question=question, answers=answers)
+    return render_template('questions.html', title='Вопросы', question=record['question'],
+                           answers=record['wrong_answers'])
 
 
 if __name__ == '__main__':
