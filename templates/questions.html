@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{{ super() }}
+{% block main %}
+    <p>{{ question }}</p>
+    <form action="questions" method="post">
+        {% for answer in answers %}
+            <label>
+                <input type="radio" name="answer" value="{{ answer }}"> {{ answer }}
+            </label>
+            <br>
+        {% endfor %}
+        <label>
+            <input type="submit" value="Ответить">
+        </label>
+    </form>
+{% endblock %}

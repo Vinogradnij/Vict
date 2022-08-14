@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 {{ super() }}
 {% block main %}
-    <h1>{{ categorie }}</h1>
+    <h1>{{ topic }}</h1>
     <p>Текст о категории</p>
     <p><b>Выберите сложность</b></p>
-    <form action="{{ server }}" method="get">
+    <form action="{{ server }}" method="post">
         <label>
             <input type="radio" name="difficult" value="easy" checked> Низкая сложность
         </label>
@@ -13,6 +13,7 @@
             <input type="radio" name="difficult" value="hard"> Высокая сложность
         </label>
         <br>
+        <input type="hidden" name="topic" value="{{ topic }}">
         <label>
             <input type="submit" value="Перейти к вопросам">
         </label>

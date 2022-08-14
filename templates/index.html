@@ -3,8 +3,8 @@
 {% block main %}
     <h1>Главная</h1>
     <ul>
-        {% for categorie in categories %}
-            <li><a href="{{ categorie['url'] }}"> {{ categorie['name'] }}</a></li>
+        {% for topic in topics %}
+            <li><a href="{{ topic['url'] }}"> {{ topic['name'] }}</a></li>
         {% endfor %}
     </ul>
 {% endblock %}
