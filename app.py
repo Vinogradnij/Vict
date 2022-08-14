@@ -8,8 +8,6 @@ topics = [{'name': 'География', 'url': '/geography'},
           {'name': 'История', 'url': '/history'},
           {'name': 'Информатика', 'url': '/informatics'}]
 
-server = 'http://localhost'
-
 handler = None
 
 
@@ -36,25 +34,31 @@ def informatics():
 @app.route('/questions', methods=['POST', 'GET'])
 def questions():
     global handler
-    record = {}
     if request.method == 'POST':
         if 'topic' in request.form:
             if request.form['topic'] == 'География':
                 handler = HandlerQuestions(1)
-                record = handler.get_question()
+                handler.get_question()
             elif request.form['topic'] == 'История':
                 pass
             elif request.form['topic'] == 'Информатика':
                 pass
-        if 'answer' in request.form:
+        if 'submit_answer' in request.form:
             if not handler.check_answer(request.form['answer']):
                 flash('Неправильно! Верный ответ: ' + handler.right_answer)
-            record = handler.get_question()
-            if not record:
+            else:
+                flash('Правильно!')
+            return render_template('questions.html', title='Вопросы', question=handler.record['question'],
+                                   answers=handler.record['wrong_answers'], answer_disabled='disabled',
+                                   next_disabled='')
+
+        if 'submit_next' in request.form:
+            handler.get_question()
+            if not handler.record:
                 return render_template('congratulations.html', points=handler.points)
 
-    return render_template('questions.html', title='Вопросы', question=record['question'],
-                           answers=record['wrong_answers'])
+    return render_template('questions.html', title='Вопросы', question=handler.record['question'],
+                           answers=handler.record['wrong_answers'], answer_disabled='', next_disabled='disabled')
 
 
 if __name__ == '__main__':

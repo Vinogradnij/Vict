@@ -9,6 +9,7 @@ class HandlerQuestions:
         self.__records = self.__connect()
         self.__keys = list(self.__records.keys())
         self.__points = 0
+        self.__record = {}
         self.__right_answer = ''
 
     def __connect(self) -> dict:
@@ -19,7 +20,7 @@ class HandlerQuestions:
                                           port="5432",
                                           database="bd_quiz")
             cursor = connection.cursor()
-            cursor.execute(sql.SQL("select * from questions where topic=%s"), [self.__topic])
+            cursor.execute("select * from questions where topic=%s", [self.__topic])
             records = {}
             for record in cursor:
                 records[record[0]] = {'question': record[2], 'right_answer': record[3], 'wrong_answers': list(record[4:])}
@@ -42,6 +43,10 @@ class HandlerQuestions:
     def right_answer(self):
         return self.__right_answer
 
+    @property
+    def record(self):
+        return self.__record
+
     def get_question(self) -> dict:
         if self.__keys:
             number_of_question = choice(self.__keys)
@@ -49,8 +54,10 @@ class HandlerQuestions:
             self.__keys.remove(number_of_question)
             self.__right_answer = record['right_answer']
             record['wrong_answers'] = self.__shuffle_answers(record['right_answer'], record['wrong_answers'])
+            self.__record = record
             return record
         else:
+            self.__record = {}
             return {}
 
     def check_answer(self, user_answer: str) -> bool:
