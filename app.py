@@ -1,7 +1,8 @@
 from handler_questions import HandlerQuestions
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, flash
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = '214njsdjkf89325asf'
 
 topics = [{'name': 'География', 'url': '/geography'},
           {'name': 'История', 'url': '/history'},
@@ -46,7 +47,8 @@ def questions():
             elif request.form['topic'] == 'Информатика':
                 pass
         if 'answer' in request.form:
-            handler.check_answer(request.form['answer'])
+            if not handler.check_answer(request.form['answer']):
+                flash('Неправильно! Верный ответ: ' + handler.right_answer)
             record = handler.get_question()
             if not record:
                 return render_template('congratulations.html', points=handler.points)

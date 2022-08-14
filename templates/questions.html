@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {{ super() }}
 {% block main %}
+    {% for msg in get_flashed_messages() %}
+    <div class="wrong">{{ msg }}</div>
+    {% endfor %}
     <p>{{ question }}</p>
     <form action="questions" method="post">
         {% for answer in answers %}

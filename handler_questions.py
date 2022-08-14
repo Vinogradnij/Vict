@@ -38,6 +38,10 @@ class HandlerQuestions:
     def points(self):
         return self.__points
 
+    @property
+    def right_answer(self):
+        return self.__right_answer
+
     def get_question(self) -> dict:
         if self.__keys:
             number_of_question = choice(self.__keys)
@@ -49,6 +53,8 @@ class HandlerQuestions:
         else:
             return {}
 
-    def check_answer(self, user_answer: str) -> None:
+    def check_answer(self, user_answer: str) -> bool:
         if user_answer.lower() == self.__right_answer.lower():
             self.__points += 1
+            return True
+        return False
